@@ -3,20 +3,17 @@ trigger:
   - master
 pool:
   vmImage: ubuntu-latest
-stages:
-  - stage:
-      - task: Maven@3
-        displayName: maven_project_profile
-        inputs:
-          mavenPomFile: my_project/pom.xml
-          options: -DskipTests=true -P someprofile
-          goals: clean deploy -p someprofile
-          publishJUnitResults: true
-          testResultsFiles: "**/surefire-reports/TEST-*.xml"
-          testRunTitle: fixBypassService
-          javaHomeOption: JDKVersion
-          jdkVersionOption: "1.8"
-          mavenVersionOption: Default
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          sonarQubeRunAnalysis: false
+steps:
+  - checkout: self
+    persistCredentials: true
+
+  - task: Maven@4
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'validate'
