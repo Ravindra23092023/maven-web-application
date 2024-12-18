@@ -1,6 +1,6 @@
 ---
 trigger:
-  - none
+  - dev
 pool:
   vmImage: ubuntu-latest
 steps:
